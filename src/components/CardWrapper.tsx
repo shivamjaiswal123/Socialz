@@ -14,6 +14,7 @@ interface CardWrapperProps {
   children: React.ReactNode;
   instructionLabel: string;
   instructionHref: string;
+  instructionLink: string;
 }
 
 const CardWrapper = ({
@@ -22,6 +23,7 @@ const CardWrapper = ({
   children,
   instructionLabel,
   instructionHref,
+  instructionLink,
 }: CardWrapperProps) => {
   return (
     <div className="h-screen flex justify-center items-center p-6">
@@ -40,7 +42,7 @@ const CardWrapper = ({
               href={instructionHref}
               className="text-primary underline-offset-4 hover:underline"
             >
-              Sign in
+              {instructionLink}
             </Link>
           </p>
         </CardFooter>

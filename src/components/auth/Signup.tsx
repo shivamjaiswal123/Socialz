@@ -17,6 +17,8 @@ import CardWrapper from '@/components/CardWrapper';
 import DecarmationLine from '@/components/DemarcationLine';
 import Social from '@/components/Social';
 
+type FormData = z.infer<typeof SignupSchema>;
+
 const Signup = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(SignupSchema),
@@ -26,8 +28,6 @@ const Signup = () => {
       password: '',
     },
   });
-
-  type FormData = z.infer<typeof SignupSchema>;
 
   const onSubmit = (data: FormData) => {
     console.log('form data: ', data);
@@ -39,6 +39,7 @@ const Signup = () => {
       description="Please enter your details to sign up."
       instructionLabel="Already have an account?"
       instructionHref="/signin"
+      instructionLink="Sign in"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
