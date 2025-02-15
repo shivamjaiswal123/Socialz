@@ -1,3 +1,4 @@
+import CreatePost from '@/components/CreatePost';
 import Sidebar from '@/components/Sidebar';
 
 const Home = async () => {
@@ -7,7 +8,9 @@ const Home = async () => {
         <div className="hidden lg:block lg:col-span-3">
           <Sidebar />
         </div>
-        <div className="col-span-6">Main content</div>
+        <div className="col-span-6">
+          <CreatePost />
+        </div>
         <div className="col-span-3">Who to follow</div>
       </div>
     </div>
