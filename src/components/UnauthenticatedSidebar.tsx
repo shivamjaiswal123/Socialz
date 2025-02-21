@@ -1,12 +1,12 @@
 import {
   Card,
+  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import LoginButton from './LoginButton';
-import { Button } from './ui/button';
+import LoginButton from '@/components/LoginButton';
+import { Button } from '@/components/ui/button';
 
 const UnauthenticatedSidebar = () => {
   return (
@@ -18,13 +18,13 @@ const UnauthenticatedSidebar = () => {
             Login to access your account and connect with others
           </CardDescription>
         </CardHeader>
-        <CardFooter>
-          {/* <LoginButton> */}
-          <Button size="lg" className="w-full">
-            Login
-          </Button>
-          {/* </LoginButton> */}
-        </CardFooter>
+        <CardContent>
+          <LoginButton>
+            <Button size="lg" className="w-full">
+              Login
+            </Button>
+          </LoginButton>
+        </CardContent>
       </Card>
     </div>
   );

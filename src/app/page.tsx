@@ -1,17 +1,20 @@
 import CreatePost from '@/components/CreatePost';
 import Sidebar from '@/components/Sidebar';
+import WhoToFollow from '@/components/WhoToFollow';
 
 const Home = async () => {
   return (
-    <div className="max-w-7xl mx-auto mt-8 px-4">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="hidden lg:block lg:col-span-3">
+    <div className="max-w-7xl mx-auto">
+      <div className="flex gap-2">
+        <div className="hidden lg:block">
           <Sidebar />
         </div>
-        <div className="col-span-6">
+        <div className="border-x flex-1 p-4">
           <CreatePost />
         </div>
-        <div className="col-span-3">Who to follow</div>
+        <div className="hidden w-[350] p-2 md:block">
+          <WhoToFollow />
+        </div>
       </div>
     </div>
   );

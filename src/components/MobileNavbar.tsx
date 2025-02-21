@@ -1,4 +1,3 @@
-'use client';
 import ModeToggle from '@/components/ModeToggle';
 import {
   Sheet,
@@ -8,14 +7,20 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { BellIcon, HomeIcon, MenuIcon } from 'lucide-react';
+import {
+  BellIcon,
+  Bookmark,
+  HomeIcon,
+  MenuIcon,
+  User2Icon,
+} from 'lucide-react';
 import Link from 'next/link';
 import LoginButton from '@/components/LoginButton';
-import { useSession } from 'next-auth/react';
 import LogoutButton from '@/components/LogoutButton';
+import { getServerSession } from 'next-auth';
 
-const MobileNavbar = () => {
-  const session = useSession();
+const MobileNavbar = async () => {
+  const session = await getServerSession();
 
   return (
     <div className="md:hidden space-x-2">
@@ -32,28 +37,39 @@ const MobileNavbar = () => {
             <SheetTitle>Menu</SheetTitle>
           </SheetHeader>
           <nav className="mt-6 space-y-4">
-            <Button
-              variant="ghost"
-              className="flex justify-start items-center gap-2"
-              asChild
+            <Link
+              href="/"
+              className="font-semibold flex gap-4 items-center py-2"
             >
-              <Link href="/">
-                <HomeIcon />
-                <span>Home</span>
-              </Link>
-            </Button>
-            {session.data ? (
+              <HomeIcon />
+              <span>Home</span>
+            </Link>
+
+            {session ? (
               <>
-                <Button
-                  variant="ghost"
-                  className="flex justify-start items-center gap-2"
-                  asChild
+                <Link
+                  href="/notification"
+                  className="font-semibold flex gap-4 items-center py-2"
                 >
-                  <Link href="/">
-                    <BellIcon />
-                    <span>Notification</span>
-                  </Link>
-                </Button>
+                  <BellIcon />
+                  <span>Notifications</span>
+                </Link>
+
+                <Link
+                  href="/bookmark"
+                  className="font-semibold flex gap-4 items-center py-2"
+                >
+                  <Bookmark />
+                  <span>Bookmark</span>
+                </Link>
+
+                <Link
+                  href="/profile"
+                  className="font-semibold flex gap-4 items-center py-2"
+                >
+                  <User2Icon />
+                  <span>Profile</span>
+                </Link>
 
                 <LogoutButton>
                   <Button variant="destructive" className="w-full">

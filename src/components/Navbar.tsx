@@ -4,8 +4,8 @@ import MobileNavbar from '@/components/MobileNavbar';
 
 const Navbar = () => {
   return (
-    <nav className="border-b">
-      <div className="max-w-7xl mx-auto h-16 flex justify-between items-center px-6">
+    <nav className="sticky top-0 z-50 border-b px-4 backdrop-blur">
+      <div className="max-w-7xl mx-auto h-16 flex justify-between items-center md:px-6">
         {/* logo */}
         <div>
           <Link href="/" className="text-xl font-bold font-mono tracking-wider">
