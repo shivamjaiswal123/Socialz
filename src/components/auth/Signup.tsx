@@ -16,10 +16,15 @@ import { SignupSchema } from '@/schemas';
 import CardWrapper from '@/components/CardWrapper';
 import DecarmationLine from '@/components/DemarcationLine';
 import Social from '@/components/Social';
+import { signup } from '@/actions/user.actions';
+import { Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 type FormData = z.infer<typeof SignupSchema>;
 
 const Signup = () => {
+  const router = useRouter();
   const form = useForm<FormData>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
@@ -29,8 +34,18 @@ const Signup = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log('form data: ', data);
+  const signupHandler = async (data: FormData) => {
+    try {
+      const response = await signup(data);
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+      toast.success(response.message);
+      router.push('/signin');
+    } catch (error) {
+      console.log('Error in signing up: ', error);
+    }
   };
 
   return (
@@ -42,7 +57,7 @@ const Signup = () => {
       instructionLink="Sign in"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(signupHandler)} className="space-y-4">
           <FormField
             control={form.control}
             name="username"
@@ -83,7 +98,16 @@ const Signup = () => {
             )}
           />
 
-          <Button className="w-full">Create Account</Button>
+          <Button className="w-full" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? (
+              <>
+                Signing up
+                <Loader className="animate-spin" strokeWidth={3} />
+              </>
+            ) : (
+              'Create Account'
+            )}
+          </Button>
 
           <DecarmationLine />
           <Social />

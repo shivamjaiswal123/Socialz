@@ -1,6 +1,7 @@
 'use client';
 import ThemeProvider from '@/providers/theme-provider';
 import { SessionProvider } from 'next-auth/react';
+import { Toaster } from '@/components/ui/sonner';
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -11,6 +12,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
       disableTransitionOnChange
     >
       <SessionProvider>{children}</SessionProvider>
+      <Toaster position="top-right" richColors />
     </ThemeProvider>
   );
 };

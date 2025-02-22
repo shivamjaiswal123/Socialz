@@ -16,10 +16,18 @@ import { SigninSchema } from '@/schemas';
 import CardWrapper from '@/components/CardWrapper';
 import DecarmationLine from '@/components/DemarcationLine';
 import Social from '@/components/Social';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import FormError from '@/components/form-error';
+import { useState } from 'react';
+import { Loader } from 'lucide-react';
 
 type FormData = z.infer<typeof SigninSchema>;
 
 const Signin = () => {
+  const router = useRouter();
+  const [error, setError] = useState<any>();
   const form = useForm<FormData>({
     resolver: zodResolver(SigninSchema),
     defaultValues: {
@@ -28,8 +36,23 @@ const Signin = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log('form data: ', data);
+  const signinHandler = async (data: FormData) => {
+    setError('');
+    try {
+      const response = await signIn('credentials', {
+        ...data,
+        redirect: false,
+      });
+
+      if (!response?.ok) {
+        setError(response?.error);
+        return;
+      }
+      toast.success('You are logged in');
+      router.push('/');
+    } catch (error) {
+      console.log('Error on signin in: ', error);
+    }
   };
 
   return (
@@ -41,7 +64,7 @@ const Signin = () => {
       instructionLink="Sign up"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(signinHandler)} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
@@ -68,8 +91,16 @@ const Signin = () => {
               </FormItem>
             )}
           />
-
-          <Button className="w-full">Signin</Button>
+          <FormError message={error} />
+          <Button className="w-full" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? (
+              <>
+                Signing in <Loader className="animate-spin" strokeWidth={3} />
+              </>
+            ) : (
+              'Signin'
+            )}
+          </Button>
 
           <DecarmationLine />
           <Social />

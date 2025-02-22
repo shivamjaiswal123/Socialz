@@ -1,8 +1,57 @@
 import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "./prisma";
+import bcrypt from "bcrypt";
+import { SigninSchema } from "@/schemas";
 
 export const authOptions = {
   providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: "email", type: "text", placeholder: "jsmith@gmail.com" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials, req) {
+        const result = SigninSchema.safeParse(credentials)
+        if(!result.success) {
+          return null
+        }
+
+        try {
+          const { email, password } = result.data
+          const user = await prisma.user.findUnique({
+            where: {
+              email
+            },
+            select: {
+              id: true,
+              username: true,
+              email: true,
+              password: true
+            }
+          })
+
+
+          if (!user) {
+            throw new Error("User does not exist")
+          }
+
+          const isPasswordCorrect = await bcrypt.compare(password, user.password!)
+          if(!isPasswordCorrect) {
+            throw new Error("Incorrect Password")
+          }
+
+          return {
+            id: user.id,
+            name: user.username,
+            email: user.email
+          }
+        } catch (error) {
+          throw error
+        }
+      }
+    }),
     GitHubProvider({
         clientId: process.env.GITHUB_ID ?? "",
         clientSecret: process.env.GITHUB_SECRET ?? ""
@@ -11,6 +60,10 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
      signIn: async ({ user, account }: any) => {
+      if(account.provider === 'credentials') {
+        return true
+      }
+
       try {
         // check if user already exist
         const existingUser = await prisma.user.findUnique({
@@ -41,6 +94,7 @@ export const authOptions = {
     jwt: async ({token, user}: any) => {
       if(user) {
         token.uid = user.id
+        token.name = user.name
       }
       return token
     },
