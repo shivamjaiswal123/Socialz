@@ -26,6 +26,7 @@ export const authOptions = {
             },
             select: {
               id: true,
+              name: true,
               username: true,
               email: true,
               password: true
@@ -44,7 +45,7 @@ export const authOptions = {
 
           return {
             id: user.id,
-            name: user.username,
+            name: user.name,
             email: user.email
           }
         } catch (error) {
@@ -75,6 +76,7 @@ export const authOptions = {
         if(!existingUser) {
           await prisma.user.create({
             data: {
+              name: user.name,
               username: user.email.split("@")[0],
               email: user.email,
               image: user.image,

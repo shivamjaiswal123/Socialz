@@ -23,7 +23,7 @@ const MobileNavbar = async () => {
   const session = await getServerSession();
 
   return (
-    <div className="md:hidden space-x-2">
+    <div className="lg:hidden space-x-2">
       <ModeToggle />
 
       <Sheet>

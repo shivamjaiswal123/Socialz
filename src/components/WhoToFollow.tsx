@@ -1,10 +1,14 @@
-import { getServerSession } from 'next-auth';
 import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
+import { getRandomUsers } from '@/actions/user.actions';
 
 const WhoToFollow = async () => {
-  const session = await getServerSession();
+  const users = await getRandomUsers();
+
+  if (!users.length) {
+    return;
+  }
 
   return (
     <div className="sticky top-36">
@@ -12,18 +16,24 @@ const WhoToFollow = async () => {
         <CardHeader>
           <CardTitle>Who to follow</CardTitle>
         </CardHeader>
-        <CardContent className="px-2">
-          <div className="flex gap-3">
-            <Avatar>
-              <AvatarImage src="" />
-              <AvatarFallback>SJ</AvatarFallback>
-            </Avatar>
-            <div className="text-sm">
-              <h3 className="font-semibold text-clip">Shivam Jaiswal</h3>
-              <p className="text-muted-foreground">@shivamj</p>
+        <CardContent className="px-4">
+          {users.map((user) => (
+            <div className="flex gap-3 mb-6">
+              <Avatar>
+                <AvatarImage src={user.image!} />
+                <AvatarFallback>
+                  {user.username.split('')[0].toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="text-sm w-28">
+                <h3 className="font-semibold text-clip overflow-hidden">
+                  {user.name}
+                </h3>
+                <p className="text-muted-foreground">@{user.username}</p>
+              </div>
+              <Button className="rounded-full w-24">Follow</Button>
             </div>
-            <Button className="rounded-full w-24">Follow</Button>
-          </div>
+          ))}
         </CardContent>
       </Card>
     </div>

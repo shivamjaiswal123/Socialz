@@ -10,7 +10,7 @@ const DesktopNavbar = async () => {
   // const session = await getServerSession();
 
   return (
-    <div className="hidden md:flex space-x-4">
+    <div className="hidden lg:flex space-x-4">
       <ModeToggle />
       {/* <Button variant="ghost" className="flex items-center gap-2" asChild>
         <Link href="/">

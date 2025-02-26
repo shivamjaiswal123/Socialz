@@ -12,7 +12,7 @@ const Home = async () => {
         <div className="border-x flex-1 p-4">
           <CreatePost />
         </div>
-        <div className="hidden w-[350] p-2 md:block">
+        <div className="hidden w-[325px] p-2 md:block">
           <WhoToFollow />
         </div>
       </div>

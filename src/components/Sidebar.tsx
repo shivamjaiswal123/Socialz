@@ -91,7 +91,7 @@ const Sidebar = async () => {
                 @{session.user?.email?.split('@')[0]}
               </span>
             </div>
-            <MoreHorizontal className="ml-auto h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
+            <MoreHorizontal className="ml-auto h-5 w-5" />
           </button>
         </div>
       ) : (
