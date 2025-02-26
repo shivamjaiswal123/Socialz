@@ -1,7 +1,7 @@
-import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
+import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getRandomUsers } from '@/actions/user.actions';
+import FollowButton from '@/components/FollowButton';
 
 const WhoToFollow = async () => {
   const users = await getRandomUsers();
@@ -31,7 +31,7 @@ const WhoToFollow = async () => {
                 </h3>
                 <p className="text-muted-foreground">@{user.username}</p>
               </div>
-              <Button className="rounded-full w-24">Follow</Button>
+              <FollowButton userId={user.id} />
             </div>
           ))}
         </CardContent>

@@ -73,7 +73,7 @@ export const getRandomUsers = async () => {
             where: {
                 AND: [
                     { NOT: { id: session.user.uid } },
-                    { NOT: { following: { some : { followingId : session.user.uid }} }}
+                    { NOT: { followers: { some : { followerId : session.user.uid }} }}
                 ]
             },
             select: {
@@ -86,5 +86,60 @@ export const getRandomUsers = async () => {
         })
     } catch (error) {
         return []
+    }
+}
+
+export const toggleFollow = async (targetUserId: string) => {
+    const session = await getServerSession(authOptions)
+    const userId = session.user.uid
+
+    try {
+        if(userId === targetUserId) {
+            throw new Error ("You can't follow yourself")
+        }
+
+        const existingFollow = await prisma.follows.findUnique({
+            where: {
+                followerId_followingId: {
+                    followerId: userId,
+                    followingId: targetUserId
+                }
+            }
+        })
+
+        if(existingFollow) {
+            // unfollow
+            await prisma.follows.delete({
+                where: {
+                    followerId_followingId: {
+                        followerId: userId,
+                        followingId: targetUserId
+                    }
+                }
+            })
+        }else {
+            // follow
+            await prisma.$transaction([
+                prisma.follows.create({
+                    data: {
+                        followerId: userId,         // userId is the person who follows
+                        followingId: targetUserId   // targetUserId is the person being followed
+                    }
+                }),
+
+                prisma.notification.create({
+                    data: {
+                        type: 'FOLLOW',
+                        userId: targetUserId,
+                        creatorId: userId
+                    }
+                })
+            ])
+        }
+
+        return { success: true }
+    } catch (error) {
+        // console.log("Error in toggleFlow: ", error)
+        return { success: false }
     }
 }
