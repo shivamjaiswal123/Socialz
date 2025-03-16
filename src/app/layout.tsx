@@ -34,20 +34,8 @@ export default function RootLayout({
         <Provider>
           <Navbar />
           <div className="max-w-7xl mx-auto">
-            <div className="flex gap-2">
-              {/* Sidebar */}
-              <div className="hidden lg:block">
-                <Sidebar />
-              </div>
-
-              {/* Main Content */}
-              <main className="flex-1 border-x">{children}</main>
-
-              {/* Who to Follow Section */}
-              <div className="hidden w-[325px] p-2 md:block">
-                <WhoToFollow />
-              </div>
-            </div>
+            {/* Main Content */}
+            <main>{children}</main>
           </div>
         </Provider>
       </body>
