@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Provider from '@/providers/providers';
 import Navbar from '@/components/Navbar';
+import Sidebar from '@/components/Sidebar';
+import WhoToFollow from '@/components/WhoToFollow';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,7 +33,22 @@ export default function RootLayout({
       >
         <Provider>
           <Navbar />
-          {children}
+          <div className="max-w-7xl mx-auto">
+            <div className="flex gap-2">
+              {/* Sidebar */}
+              <div className="hidden lg:block">
+                <Sidebar />
+              </div>
+
+              {/* Main Content */}
+              <main className="flex-1 border-x">{children}</main>
+
+              {/* Who to Follow Section */}
+              <div className="hidden w-[325px] p-2 md:block">
+                <WhoToFollow />
+              </div>
+            </div>
+          </div>
         </Provider>
       </body>
     </html>
