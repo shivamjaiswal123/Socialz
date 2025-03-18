@@ -6,10 +6,20 @@ import {
   BellIcon,
   Bookmark,
   HomeIcon,
+  LogOutIcon,
   MoreHorizontal,
   User2Icon,
 } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import LoginButton from '@/components/LoginButton';
+import LogoutButton from './LogoutButton';
 
 const navItems = [
   {
@@ -73,26 +83,37 @@ const Sidebar = async () => {
       {/* User Profile */}
       {session ? (
         <div className="mt-auto px-4 py-3">
-          <button className="group flex w-full items-center gap-3 rounded-full p-3 transition-all duration-200 hover:bg-accent">
-            <div className="h-10 w-10 rounded-full">
-              <Avatar>
-                <AvatarImage
-                  src={session.user?.image || ''}
-                  className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-110"
-                />
-                <AvatarFallback>
-                  {session.user?.name?.split('')[0].toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="flex flex-col items-start">
-              <span className="font-bold">{session.user?.name}</span>
-              <span className="text-sm text-muted-foreground">
-                @{session.user?.email?.split('@')[0]}
-              </span>
-            </div>
-            <MoreHorizontal className="ml-auto h-5 w-5" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="group flex w-full items-center gap-3 rounded-full p-3 transition-all duration-200 hover:bg-accent">
+                <div className="h-10 w-10 rounded-full">
+                  <Avatar>
+                    <AvatarImage
+                      src={session.user?.image || ''}
+                      className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-110"
+                    />
+                    <AvatarFallback>
+                      {session.user?.name?.split('')[0].toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+                <div className="flex flex-col items-start">
+                  <span className="font-bold">{session.user?.name}</span>
+                  <span className="text-sm text-muted-foreground">
+                    @{session.user?.email?.split('@')[0]}
+                  </span>
+                </div>
+                <MoreHorizontal className="ml-auto h-5 w-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-52">
+              <LogoutButton>
+                <Button variant="ghost" className="w-full">
+                  <span className="text-[16px]">Logout</span>
+                </Button>
+              </LogoutButton>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       ) : (
         <div className="mt-auto px-4 py-3">

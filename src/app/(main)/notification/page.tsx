@@ -30,7 +30,7 @@ const Notification = async () => {
 
   return (
     <div className="space-y-4">
-      <Card className="rounded-none">
+      <Card className="rounded-none border-none">
         <CardHeader className="border-b">
           <CardTitle>Notifications</CardTitle>
         </CardHeader>

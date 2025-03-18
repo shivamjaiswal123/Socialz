@@ -33,9 +33,9 @@ const FollowButton = ({ userId }: { userId: string }) => {
       {isLoading ? (
         <Loader2 className="animate-spin" />
       ) : following ? (
-        'following'
+        'Following'
       ) : (
-        'follow'
+        'Follow'
       )}
     </Button>
   );

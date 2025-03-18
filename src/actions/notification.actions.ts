@@ -1,3 +1,5 @@
+'use server'
+
 import { authOptions } from "@/lib/authOptions"
 import { prisma } from "@/lib/prisma"
 import { getServerSession } from "next-auth"
