@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from 'next-auth/react';
 import { formatDistanceToNow } from 'date-fns';
+import { redirect } from 'next/navigation';
 
 type Posts = Awaited<ReturnType<typeof getAllPosts>>;
 type Post = Posts[number];
@@ -33,6 +34,9 @@ const PostCard = ({ post, userId }: { post: Post; userId: string }) => {
   const [showComment, setShowComment] = useState(false);
 
   const handleLike = async () => {
+    if (!session.data) {
+      redirect('signin');
+    }
     // if liking post is in progress
     if (isLiking) return;
     try {
@@ -131,7 +135,12 @@ const PostCard = ({ post, userId }: { post: Post; userId: string }) => {
                   ? 'text-blue-500 hover:text-blue-600'
                   : 'hover:text-blue-500'
               } `}
-              onClick={() => setShowComment((prev) => !prev)}
+              onClick={() => {
+                if (!session.data) {
+                  redirect('signin');
+                }
+                setShowComment((prev) => !prev);
+              }}
             >
               {showComment ? (
                 <MessageCircleIcon className="fill-current" />
@@ -158,17 +167,17 @@ const PostCard = ({ post, userId }: { post: Post; userId: string }) => {
                 {post.comments.map((comment) => (
                   <div key={comment.id} className="flex gap-4">
                     <Avatar className="size-8">
-                      <AvatarImage src={post.author.image!} />
+                      <AvatarImage src={comment.author.image!} />
                       <AvatarFallback>
-                        {post.author.name.split('')[0].toUpperCase()}
+                        {comment.author.name.split('')[0].toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
 
                     <div className="space-y-1">
                       <div className="space-x-2">
-                        <span>{post.author.name}</span>
+                        <span>{comment.author.name}</span>
                         <span className="text-sm text-muted-foreground">
-                          @{post.author.username}
+                          @{comment.author.username}
                         </span>
                         <span className="text-muted-foreground">•</span>
                         <span className="text-xs text-muted-foreground">
@@ -186,9 +195,9 @@ const PostCard = ({ post, userId }: { post: Post; userId: string }) => {
                 <>
                   <div className="flex space-x-4">
                     <Avatar>
-                      <AvatarImage src={post.author.image!} />
+                      <AvatarImage src={session.data.user?.image!} />
                       <AvatarFallback>
-                        {post.author.name.split('')[0].toUpperCase()}
+                        {session.data.user?.name?.split('')[0].toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <Textarea
