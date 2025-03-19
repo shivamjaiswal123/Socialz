@@ -16,6 +16,7 @@ export const createPost = async (content: string, imageUrl: string) => {
                 authorId: session?.user.uid
             }
         })
+        revalidatePath('/')
         return { success: true, post }
     } catch (error) {
         console.log('Error in posting content')

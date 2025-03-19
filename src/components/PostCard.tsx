@@ -81,7 +81,7 @@ const PostCard = ({ post, userId }: { post: Post; userId: string }) => {
                 @{post.author.username}
               </span>
               <span className="text-muted-foreground">•</span>
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground text-sm">
                 {formatDistanceToNow(new Date(post.createdAt))} ago
               </span>
             </div>

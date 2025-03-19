@@ -1,4 +1,5 @@
 'use client';
+
 import { useSession } from 'next-auth/react';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,23 +9,31 @@ import { Image, Loader2, SendIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { createPost } from '@/actions/post.action';
+import ImageUpload from './ImageUpload';
+import { redirect } from 'next/navigation';
 
 const CreatePost = () => {
   const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [isPosting, setIsposting] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   const session = useSession();
 
   const handleCreatePost = async () => {
+    if (!session.data) {
+      redirect('/signin');
+    }
     try {
       setIsposting(true);
       const res = await createPost(content, imageUrl);
       if (res.success) {
         setContent('');
         setImageUrl('');
+        setShowImageUpload(false);
       }
     } catch (error) {
+      console.error('Failed to create post:', error);
     } finally {
       setIsposting(false);
     }
@@ -48,16 +57,38 @@ const CreatePost = () => {
           />
         </div>
 
+        {(showImageUpload || imageUrl) && (
+          <div className="rounded-lg p-4 mb-4">
+            <ImageUpload
+              endpoint="postImage"
+              value={imageUrl}
+              onImageUploadSuccess={(url) => {
+                // set the url received from onClientUploadComplete
+                setImageUrl(url);
+                if (!url) setShowImageUpload(false);
+              }}
+            />
+          </div>
+        )}
+
         <Separator />
 
         <div className="mt-4 flex justify-between items-center">
-          <Button variant="ghost">
+          <Button
+            variant="ghost"
+            onClick={() => {
+              if (!session.data) {
+                redirect('/signin');
+              }
+              setShowImageUpload((prev) => !prev);
+            }}
+          >
             <Image />
             Photo
           </Button>
 
           <Button
-            disabled={!content.trim() || isPosting}
+            disabled={(!content.trim() && !imageUrl) || isPosting}
             onClick={handleCreatePost}
           >
             {isPosting ? (
