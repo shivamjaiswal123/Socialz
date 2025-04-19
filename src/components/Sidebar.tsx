@@ -55,7 +55,11 @@ const Sidebar = async () => {
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={
+                item.title === 'Profile'
+                  ? `${item.href}/${session?.user?.email?.split('@')[0]}`
+                  : item.href
+              }
               className="group flex items-center gap-4 rounded-full px-4 py-3 transition-all duration-200 ease-in-out hover:bg-accent"
             >
               <div>

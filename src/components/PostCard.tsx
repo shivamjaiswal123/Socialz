@@ -17,6 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useSession } from 'next-auth/react';
 import { formatDistanceToNow } from 'date-fns';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 type Posts = Awaited<ReturnType<typeof getAllPosts>>;
 type Post = Posts[number];
@@ -71,18 +72,24 @@ const PostCard = ({ post, userId }: { post: Post; userId: string }) => {
     <Card>
       <CardContent>
         <div className="flex gap-2 mt-4">
-          <Avatar>
-            <AvatarImage src={post.author.image!} />
-            <AvatarFallback>
-              {post.author.name.split('')[0].toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          <Link href={`/profile/${post.author.username}`}>
+            <Avatar>
+              <AvatarImage src={post.author.image!} />
+              <AvatarFallback>
+                {post.author.name.split('')[0].toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
           <div className="space-y-2">
             {/* Name and username */}
             <div className="space-x-2">
-              <span>{post.author.name}</span>
+              <Link href={`/profile/${post.author.username}`}>
+                <span>{post.author.name}</span>
+              </Link>
               <span className="text-sm text-muted-foreground">
-                @{post.author.username}
+                <Link href={`/profile/${post.author.username}`}>
+                  @{post.author.username}
+                </Link>
               </span>
               <span className="text-muted-foreground">•</span>
               <span className="text-muted-foreground text-sm">
