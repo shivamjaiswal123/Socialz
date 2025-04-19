@@ -31,7 +31,9 @@ const WhoToFollow = async () => {
                   <h3 className="font-semibold text-clip overflow-hidden">
                     {user.name}
                   </h3>
-                  <p className="text-muted-foreground">@{user.username}</p>
+                  <p className="text-muted-foreground truncate">
+                    @{user.username}
+                  </p>
                 </div>
               </Link>
               <FollowButton userId={user.id} />

@@ -10,14 +10,14 @@ const Social = () => {
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          signIn('github', { callbackUrl: '/' });
+          signIn('google', { callbackUrl: '/' });
         }}
         variant="outline"
         size="lg"
         className="w-full"
       >
-        <FaGithub />
-        Github
+        <FcGoogle />
+        Google
       </Button>
     </div>
   );
