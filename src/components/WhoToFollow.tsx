@@ -19,7 +19,7 @@ const WhoToFollow = async () => {
         </CardHeader>
         <CardContent className="px-4">
           {users.map((user) => (
-            <div className="flex gap-3 mb-6">
+            <div key={user.id} className="flex gap-3 mb-6">
               <Avatar>
                 <AvatarImage src={user.image!} />
                 <AvatarFallback>

@@ -8,11 +8,11 @@ import { notFound, redirect } from 'next/navigation';
 import ProfilePage from './ProfilePage';
 import { getServerSession } from 'next-auth';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { username: string };
-}) {
+type tParams = Promise<{
+  username: string;
+}>;
+
+export async function generateMetadata({ params }: { params: tParams }) {
   const { username } = await params;
   const user = await getProfileByUsername(username);
   if (!user) return;
@@ -23,7 +23,7 @@ export async function generateMetadata({
   };
 }
 
-const UserProfile = async ({ params }: { params: { username: string } }) => {
+const UserProfile = async ({ params }: { params: tParams }) => {
   const session = await getServerSession();
   const { username } = await params;
   const user = await getProfileByUsername(username);

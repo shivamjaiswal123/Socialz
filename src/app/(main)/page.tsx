@@ -12,7 +12,7 @@ const Home = async () => {
     <div className="p-4 space-y-4">
       <CreatePost />
       {posts.map((post) => (
-        <PostCard post={post} userId={session?.user?.uid} />
+        <PostCard key={post.id} post={post} userId={session?.user?.uid} />
       ))}
     </div>
   );

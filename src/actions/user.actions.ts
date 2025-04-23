@@ -4,12 +4,10 @@ import { authOptions } from "@/lib/authOptions";
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcrypt";
 import { getServerSession } from "next-auth";
+import { z } from "zod";
+import { SignupSchema } from "@/schemas";
 
-interface UserProps {
-    username: string,
-    email: string,
-    password: string
-}
+type UserProps = z.infer<typeof SignupSchema>
 
 export const signup = async ({username, email, password}: UserProps) => {
     try {
