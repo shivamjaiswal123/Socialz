@@ -17,13 +17,16 @@ import CardWrapper from '@/components/CardWrapper';
 import DecarmationLine from '@/components/DemarcationLine';
 import Social from '@/components/Social';
 import { signup } from '@/actions/user.actions';
-import { Loader } from 'lucide-react';
+import { Eye, EyeOff, Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 type FormData = z.infer<typeof SignupSchema>;
 
 const Signup = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const router = useRouter();
   const form = useForm<FormData>({
     resolver: zodResolver(SignupSchema),
@@ -91,7 +94,24 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Password" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Password"
+                      {...field}
+                      className="pr-10"
+                    />
+                    <span
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    >
+                      {showPassword ? (
+                        <Eye className="size-4" />
+                      ) : (
+                        <EyeOff className="size-4" />
+                      )}
+                    </span>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

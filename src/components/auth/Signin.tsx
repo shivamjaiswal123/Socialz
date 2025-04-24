@@ -21,11 +21,13 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import FormError from '@/components/form-error';
 import { useState } from 'react';
-import { Loader } from 'lucide-react';
+import { Eye, EyeOff, Loader } from 'lucide-react';
 
 type FormData = z.infer<typeof SigninSchema>;
 
 const Signin = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const router = useRouter();
   const [error, setError] = useState<any>();
   const form = useForm<FormData>({
@@ -85,7 +87,23 @@ const Signin = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Password" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Password"
+                      {...field}
+                    />
+                    <span
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    >
+                      {showPassword ? (
+                        <Eye className="size-4" />
+                      ) : (
+                        <EyeOff className="size-4" />
+                      )}
+                    </span>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
